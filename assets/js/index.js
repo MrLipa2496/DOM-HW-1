@@ -65,6 +65,15 @@ function createCard() {
   likes.classList.add("likes");
   likes.textContent = `Likes: ${user.likesCount}`;
 
+  birthday.addEventListener("mouseenter", () => {
+    const age = calculateAge(user.birthday);
+    birthday.textContent = `Birthday: ${user.birthday.toDateString()} (Age: ${age})`;
+  });
+
+  birthday.addEventListener("mouseleave", () => {
+    birthday.textContent = `Birthday: ${user.birthday.toDateString()}`;
+  });
+
   cardWrapper.appendChild(nameSurname);
   cardWrapper.appendChild(userPhoto);
   cardWrapper.appendChild(birthday);
@@ -72,6 +81,20 @@ function createCard() {
   cardWrapper.appendChild(likes);
 
   document.body.appendChild(cardWrapper);
+}
+
+function calculateAge(birthday) {
+  const today = new Date();
+  const birthDate = new Date(birthday);
+  const age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+  return age;
 }
 
 dowloadBtn.addEventListener("click", createCard);
